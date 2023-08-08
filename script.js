@@ -1,4 +1,4 @@
-const users = [{title1:user1},{title2:user2}]
+const users = [{title1:'user1'},{title2:'user2'}]
 const last_activity_time={time:new Date()}
 
 const promise1=function updateLastUserActivity(){
@@ -24,7 +24,10 @@ function deletePost(){
 }
 
 console.log('last activity time of user : '+last_activity_time.time)
-Promise.all([promise1(),promise2('user1')]).then((val)=>{
+Promise.all([promise1(),promise2('user3')]).then((val)=>{
     console.log(users)
     console.log(val[0])
-}).then()
+    deletePost().then(()=>{
+        console.log(users)
+    })
+})
