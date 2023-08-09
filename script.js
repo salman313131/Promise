@@ -1,33 +1,32 @@
-const users = [{title1:'user1'},{title2:'user2'}]
+const users = ['user1','user2']
 const last_activity_time={time:new Date()}
 
-const promise1=function updateLastUserActivity(){
-    return new Promise((resolve,reject)=>{
+
+const createUserAndDeleteUser = async()=>{
+    console.log(`last activity time : ${last_activity_time.time}`)
+    console.log(users)
+    const lastActivity=new Promise((resolve,reject)=>{
         setTimeout(()=>{
             last_activity_time.time = new Date()
-            resolve('after user creation : '+last_activity_time.time)
+            resolve('after user time : '+last_activity_time.time)
         },1000)
+        })
+    const createUser = new Promise((resolve,reject)=>{
+        users.push('user3')
+        resolve('user created')
     })
-}
-
-const promise2=function createNewUser(user){
-    return new Promise((resolve,reject)=>{
-        users.push({title:user})
-        resolve()
+    const deleteUser = new Promise((res,rej)=>{
+        const user = users.pop()
+        res(user)
     })
-}
-function deletePost(){
-    return new Promise((res,rej)=>{
-        users.pop()
-        res()
-    })
-}
-
-console.log('last activity time of user : '+last_activity_time.time)
-Promise.all([promise1(),promise2('user3')]).then((val)=>{
+    const [afterCreationTime,userCreated] = await Promise.all([lastActivity,createUser])
     console.log(users)
-    console.log(val[0])
-    deletePost().then(()=>{
-        console.log(users)
-    })
-})
+    console.log(afterCreationTime)
+    const [afterDeletionTime,userDeleted] = await Promise.all([lastActivity,deleteUser])
+    console.log(`user deleted is ${userDeleted}`)
+    console.log(afterDeletionTime)
+    console.log(users)
+}
+
+
+createUserAndDeleteUser()
